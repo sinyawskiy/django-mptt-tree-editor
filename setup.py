@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = "django-mptt-tree-editor",
-    version = "0.1.1",
+    version = "0.1.2",
     packages = find_packages(),
     author = "Santiago Piccinini",
     author_email = "spiccinini@codigosur.org",
