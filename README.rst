@@ -1,6 +1,8 @@
 Mptt tree editor
 ================
 
+**Forked from: https://bitbucket.org/san/django-mptt-tree-editor/**
+
 This app provides FeinCMS admin tree editor.
 
 
