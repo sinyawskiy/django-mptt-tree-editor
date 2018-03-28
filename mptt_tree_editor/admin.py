@@ -41,6 +41,7 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound, HttpResponseServerError
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _, ugettext
+from django.utils.encoding import force_text
 
 from mptt.exceptions import InvalidMove
 from mptt.forms import MPTTAdminForm
@@ -110,7 +111,7 @@ def ajax_editable_boolean_cell(item, attr, text='', override=None):
     (useful for "disabled and you can't change it" situations).
     """
     if text:
-        text = '&nbsp;(%s)' % unicode(text)
+        text = '&nbsp;(%s)' % force_text(text)
 
     if override is not None:
         a = [ django_boolean_icon(override, text), text ]
@@ -126,7 +127,7 @@ def ajax_editable_boolean_cell(item, attr, text='', override=None):
 
     a.insert(0, '<div id="wrap_%s_%d">' % ( attr, item.pk ))
     a.append('</div>')
-    return unicode(''.join(a))
+    return force_text(''.join(a))
 
 # ------------------------------------------------------------------------
 def ajax_editable_boolean(attr, short_description):
@@ -249,7 +250,7 @@ class TreeEditor(admin.ModelAdmin):
         if hasattr(item, 'short_title'):
             r += item.short_title()
         else:
-            r += unicode(item)
+            r += force_text(item)
 #        r += '</span>'
         return mark_safe(r)
     indented_short_title.short_description = _('title')
@@ -418,8 +419,8 @@ class TreeEditor(admin.ModelAdmin):
         if position in ('last-child', 'left'):
             try:
                 tree_manager.move_node(cut_item, pasted_on, position)
-            except InvalidMove, e:
-                self.message_user(request, unicode(e))
+            except InvalidMove as e:
+                self.message_user(request, force_text(e))
                 return HttpResponse('FAIL')
 
             # Ensure that model save has been run
